@@ -109,6 +109,10 @@ class ApiRequest implements IApiRequest
               $this->_connection->clearToken();
               $this->_endpoint->clearToken();
             }
+            else if($e->getCode() >= 400 && $e->getCode() < 500)
+            {
+              return false;
+            }
             return true;
           }
         );
