@@ -7,7 +7,7 @@ class GoneException extends ClientApiException
    * @inheritDoc
    */
   public function __construct(
-    string $message = '', int $code = 410, ?\Exception $previous = null
+    $message = '', $code = 410, ?\Exception $previous = null
   )
   {
     if(empty($message))

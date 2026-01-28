@@ -7,7 +7,7 @@ class NotFoundException extends ClientApiException
    * @inheritDoc
    */
   public function __construct(
-    string $message = '', int $code = 404, ?\Exception $previous = null
+    $message = '', $code = 404, ?\Exception $previous = null
   )
   {
     if(empty($message))

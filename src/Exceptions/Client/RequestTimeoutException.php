@@ -7,7 +7,7 @@ class RequestTimeoutException extends ClientApiException
    * @inheritDoc
    */
   public function __construct(
-    string $message = '', int $code = 408, ?\Exception $previous = null
+    $message = '', $code = 408, ?\Exception $previous = null
   )
   {
     if(empty($message))

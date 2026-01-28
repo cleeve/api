@@ -17,7 +17,7 @@ class ServiceAccountGrant implements IGrant
   /**
    * @inheritDoc
    */
-  public function __construct(?string $user = null, ?string $secret = null)
+  public function __construct($user = null, $secret = null)
   {
     $this->_apiUser = $user;
     $this->_apiSecret = $secret;
