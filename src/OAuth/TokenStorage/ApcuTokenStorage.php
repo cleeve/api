@@ -3,21 +3,8 @@ namespace Fortifi\Api\Core\OAuth\TokenStorage;
 
 use Fortifi\Api\Core\OAuth\Tokens\IToken;
 
-class MemcachedTokenStorage implements ITokenStorage
+class ApcuTokenStorage implements ITokenStorage
 {
-  protected $_connection;
-
-  public function __construct($server = 'localhost', $port = 11211)
-  {
-    $this->_connection = new \Memcached('fortifi_token');
-    $this->_connection->addServer($server, $port);
-  }
-
-  protected function _cacheKey($key)
-  {
-    return 'FRTAPITKN-' . $key;
-  }
-
   /**
    * Store a token in storage
    *
@@ -29,11 +16,7 @@ class MemcachedTokenStorage implements ITokenStorage
    */
   public function storeToken($key, IToken $token)
   {
-    return $this->_connection->set(
-      $this->_cacheKey($key),
-      serialize($token),
-      $token->getExpiryTime()
-    );
+    return apcu_store($this->_cacheKey($key), $token);
   }
 
   /**
@@ -46,13 +29,7 @@ class MemcachedTokenStorage implements ITokenStorage
    */
   public function retrieveToken($key, ?callable $retrieve = null)
   {
-    $token = null;
-    $cacheToken = $this->_connection->get($this->_cacheKey($key));
-
-    if($cacheToken && $cacheToken !== false)
-    {
-      $token = unserialize($cacheToken);
-    }
+    $token = apcu_fetch($this->_cacheKey($key));
 
     if($token instanceof IToken && $token->getExpiryTime() > time() + 60)
     {
@@ -73,6 +50,18 @@ class MemcachedTokenStorage implements ITokenStorage
 
   public function clearToken($key)
   {
-    $this->_connection->delete($this->_cacheKey($key));
+    apcu_delete($this->_cacheKey($key));
+  }
+
+  /**
+   * Create a temporary filename
+   *
+   * @param $key
+   *
+   * @return string
+   */
+  private function _cacheKey($key): string
+  {
+    return 'fortifi-api-token-' . $key;
   }
 }

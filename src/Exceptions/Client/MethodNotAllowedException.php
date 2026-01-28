@@ -7,7 +7,7 @@ class MethodNotAllowedException extends ClientApiException
    * @inheritDoc
    */
   public function __construct(
-    $message = '', $code = 405, \Exception $previous = null
+    string $message = '', int $code = 405, ?\Exception $previous = null
   )
   {
     if(empty($message))

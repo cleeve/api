@@ -7,7 +7,7 @@ class UnauthorizedException extends ClientApiException
    * @inheritDoc
    */
   public function __construct(
-    $message = '', $code = 401, \Exception $previous = null
+    string $message = '', int $code = 401, ?\Exception $previous = null
   )
   {
     if(empty($message))
