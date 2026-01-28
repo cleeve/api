@@ -13,7 +13,7 @@ class AccessToken implements IToken
   /**
    * @inheritDoc
    */
-  public function __construct(?string $token = null)
+  public function __construct($token = null)
   {
     $this->_token = $token;
   }
